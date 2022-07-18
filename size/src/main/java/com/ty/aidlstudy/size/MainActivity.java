@@ -86,7 +86,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void showMessage(UserMessage message) {
                     list.addFirst("client: " + message.messageContent);
-                    adapter.notifyDataSetChanged();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+
                 }
             });
         }
@@ -116,7 +122,13 @@ public class MainActivity extends AppCompatActivity {
             netService.sendMessage(new UserMessage(content.getText().toString().trim()));
             list.addFirst("server: " + content.getText().toString().trim());
             content.setText("");
-            adapter.notifyDataSetChanged();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }
